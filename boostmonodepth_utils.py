@@ -11,7 +11,7 @@ BOOST_BASE = 'BoostingMonocularDepth'
 BOOST_INPUTS = 'inputs'
 BOOST_OUTPUTS = 'outputs'
 
-def run_boostmonodepth(img_names, src_folder, depth_folder):
+def run_boostmonodepth(img_names, src_folder, depth_folder, depthNet =2):
 
     if not isinstance(img_names, list):
         img_names = [img_names]
@@ -30,7 +30,7 @@ def run_boostmonodepth(img_names, src_folder, depth_folder):
         # they save all depth as .png file
         tgt_names.append(os.path.basename(tgt_name).replace('.jpg', '.png'))
 
-    command = f'cd {BOOST_BASE} && python run.py --Final --data_dir {BOOST_INPUTS}/  --output_dir {BOOST_OUTPUTS} --depthNet 2'
+    command = f'cd {BOOST_BASE} && python run.py --Final --data_dir {BOOST_INPUTS}/  --output_dir {BOOST_OUTPUTS} --depthNet {depthNet}'
     print("running:")
     print(command)
     os.system(command)
@@ -44,7 +44,7 @@ def run_boostmonodepth(img_names, src_folder, depth_folder):
         target_height, target_width = int(round(H * scale)), int(round(W * scale))
 
         depth_image = os.path.join(BOOST_BASE, BOOST_OUTPUTS, tgt_name)
-        print("Inverting {depth_image}")
+        print(f'Inverting {depth_image}')
         invert_grayscale_image(depth_image)
         
 
