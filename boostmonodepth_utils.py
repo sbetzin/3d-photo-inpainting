@@ -29,7 +29,7 @@ def run_boostmonodepth(img_names, src_folder, depth_folder):
         # they save all depth as .png file
         tgt_names.append(os.path.basename(tgt_name).replace('.jpg', '.png'))
 
-    command = f'cd {BOOST_BASE} && python run.py --Final --data_dir {BOOST_INPUTS}/  --output_dir {BOOST_OUTPUTS} --depthNet 1'
+    command = f'cd {BOOST_BASE} && python run.py --Final --data_dir {BOOST_INPUTS}/  --output_dir {BOOST_OUTPUTS} --depthNet 2'
     print("running:")
     print(command)
     os.system(command)
