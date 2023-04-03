@@ -8,22 +8,26 @@ wget https://filebox.ece.vt.edu/~jbhuang/project/3DPhoto/model/color-model.pth
 wget https://filebox.ece.vt.edu/~jbhuang/project/3DPhoto/model/depth-model.pth
 wget https://filebox.ece.vt.edu/~jbhuang/project/3DPhoto/model/edge-model.pth
 
-mv color-model.pth checkpoints/.
-mv depth-model.pth checkpoints/.
-mv edge-model.pth checkpoints/.
+mv color-model.pth /content/3d-photo-inpainting/checkpoints/.
+mv depth-model.pth /content/3d-photo-inpainting/checkpoints/.
+mv edge-model.pth /content/3d-photo-inpainting/checkpoints/.
 
 echo "cloning from BoostingMonocularDepth ..."
 git clone https://github.com/compphoto/BoostingMonocularDepth.git
-mkdir -p BoostingMonocularDepth/pix2pix/checkpoints/mergemodel/
+mkdir -p /content/3d-photo-inpainting/BoostingMonocularDepth/pix2pix/checkpoints/mergemodel/
 
 echo "downloading mergenet weights ..."
 #wget https://filebox.ece.vt.edu/~jbhuang/project/3DPhoto/model/latest_net_G.pth
 wget https://sfu.ca/~yagiz/CVPR21/latest_net_G.pth
-mv latest_net_G.pth BoostingMonocularDepth/pix2pix/checkpoints/mergemodel/
+mv latest_net_G.pth /content/3d-photo-inpainting/BoostingMonocularDepth/pix2pix/checkpoints/mergemodel/
 
 wget https://github.com/AlexeyAB/MiDaS/releases/download/midas_dpt/midas_v21-f6b98070.pt
-mv midas_v21-f6b98070.pt BoostingMonocularDepth/midas/model.pt
+mv midas_v21-f6b98070.pt /content/3d-photo-inpainting/BoostingMonocularDepth/midas/model.pt
 
 # old midas
 #wget https://github.com/intel-isl/MiDaS/releases/download/v2/model-f46da743.pt
 #mv model-f46da743.pt BoostingMonocularDepth/midas/model.pt
+
+# Downloading LeRes weights
+wget https://cloudstor.aarnet.edu.au/plus/s/lTIJF4vrvHCAI31/download
+mv download /content/3d-photo-inpainting/BoostingMonocularDepth/res101.pth
