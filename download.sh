@@ -31,3 +31,5 @@ echo "downloading LeRes weigths ..."
 # Downloading LeRes weights
 wget https://cloudstor.aarnet.edu.au/plus/s/lTIJF4vrvHCAI31/download --quiet
 mv download /content/3d-photo-inpainting/BoostingMonocularDepth/res101.pth
+
+echo "done"
