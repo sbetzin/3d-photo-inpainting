@@ -4,6 +4,7 @@ import glob
 import numpy as np
 import imageio
 from MiDaS.MiDaS_utils import write_depth
+from invert_utils import invert_grayscale_image
 
 BOOST_BASE = 'BoostingMonocularDepth'
 
@@ -35,6 +36,9 @@ def run_boostmonodepth(img_names, src_folder, depth_folder):
     os.system(command)
 
     for i, (img_name, tgt_name) in enumerate(zip(img_names, tgt_names)):
+        print("Inverting")
+        invert_grayscale_image(img_name)
+        
         img = imageio.imread(img_name)
         H, W = img.shape[:2]
         scale = 640. / max(H, W)
