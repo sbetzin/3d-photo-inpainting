@@ -11,7 +11,7 @@ BOOST_BASE = 'BoostingMonocularDepth'
 BOOST_INPUTS = 'inputs'
 BOOST_OUTPUTS = 'outputs'
 
-def run_boostmonodepth(img_names, src_folder, depth_folder, depthNet =2):
+def run_boostmonodepth(img_names, src_folder, depth_folder, depthNet = 2):
 
     if not isinstance(img_names, list):
         img_names = [img_names]
