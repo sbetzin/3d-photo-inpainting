@@ -16,17 +16,13 @@ echo "cloning from BoostingMonocularDepth ..."
 git clone https://github.com/compphoto/BoostingMonocularDepth.git
 mkdir -p /content/3d-photo-inpainting/BoostingMonocularDepth/pix2pix/checkpoints/mergemodel/
 
-echo "downloading mergenet weights ..."
-#wget https://filebox.ece.vt.edu/~jbhuang/project/3DPhoto/model/latest_net_G.pth
+# Downloading merge model weights
 wget https://sfu.ca/~yagiz/CVPR21/latest_net_G.pth
 mv latest_net_G.pth /content/3d-photo-inpainting/BoostingMonocularDepth/pix2pix/checkpoints/mergemodel/
 
+# Downloading Midas weights
 wget https://github.com/AlexeyAB/MiDaS/releases/download/midas_dpt/midas_v21-f6b98070.pt
 mv midas_v21-f6b98070.pt /content/3d-photo-inpainting/BoostingMonocularDepth/midas/model.pt
-
-# old midas
-#wget https://github.com/intel-isl/MiDaS/releases/download/v2/model-f46da743.pt
-#mv model-f46da743.pt BoostingMonocularDepth/midas/model.pt
 
 # Downloading LeRes weights
 wget https://cloudstor.aarnet.edu.au/plus/s/lTIJF4vrvHCAI31/download
