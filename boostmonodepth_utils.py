@@ -36,18 +36,19 @@ def run_boostmonodepth(img_names, src_folder, depth_folder):
     os.system(command)
 
     for i, (img_name, tgt_name) in enumerate(zip(img_names, tgt_names)):
-        print("Inverting")
-
-        print(tgt_name)
-        invert_grayscale_image(tgt_name)
-        
         img = imageio.imread(img_name)
         H, W = img.shape[:2]
         scale = 640. / max(H, W)
 
         # resize and save depth
         target_height, target_width = int(round(H * scale)), int(round(W * scale))
-        depth = imageio.imread(os.path.join(BOOST_BASE, BOOST_OUTPUTS, tgt_name))
+
+        depth_image = os.path.join(BOOST_BASE, BOOST_OUTPUTS, tgt_name)
+        print("Inverting {depth_image}")
+        invert_grayscale_image(depth_image)
+        
+
+        depth = imageio.imread(depth_image)
         depth = np.array(depth).astype(np.float32)
         depth = resize_depth(depth, target_width, target_height)
         np.save(os.path.join(depth_folder, tgt_name.replace('.png', '.npy')), depth / 32768. - 1.)
