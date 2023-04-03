@@ -1,4 +1,5 @@
 import cv2
+import os
 
 def invert_grayscale_image(image_path):
     # Bild laden
