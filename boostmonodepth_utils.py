@@ -50,7 +50,9 @@ def run_boostmonodepth(img_names, src_folder, depth_folder, depthNet = 2):
         if depthNet == 2:
             print(f'Inverting {depth_image}')
             depth = 255 - depth
-        
+            # Write it back
+            imageio.imwrite(depth_image, depth)
+
         print (f'depth shape={depth.shape}')
         depth = np.array(depth).astype(np.float32)
         depth = resize_depth(depth, target_width, target_height)
