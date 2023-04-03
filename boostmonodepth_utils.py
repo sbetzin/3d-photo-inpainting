@@ -49,6 +49,7 @@ def run_boostmonodepth(img_names, src_folder, depth_folder, depthNet =2):
         
 
         depth = imageio.imread(depth_image)
+        print (f'depth shape={depth.shape}')
         depth = np.array(depth).astype(np.float32)
         depth = resize_depth(depth, target_width, target_height)
         np.save(os.path.join(depth_folder, tgt_name.replace('.png', '.npy')), depth / 32768. - 1.)
