@@ -27,6 +27,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='argument.yml',help='Configure of post processing')
 args = parser.parse_args()
 config = yaml.load(open(args.config, 'r'))
+
+print (config)
+
 if config['offscreen_rendering'] is True:
     vispy.use(app='egl')
 os.makedirs(config['mesh_folder'], exist_ok=True)
@@ -49,7 +52,7 @@ for idx in tqdm(range(len(sample_list))):
     mesh_fi = os.path.join(config['mesh_folder'], sample['src_pair_name'] +'.ply')
     image = imageio.imread(sample['ref_img_fi'])
 
-    print(f"Running depth extraction at {time.time()} wir use_boostmonodepth={config['use_boostmonodepth']}")
+    print(f"Running depth extraction at {time.time()} with use_boostmonodepth={config['use_boostmonodepth']}")
     if config['use_boostmonodepth'] is True:
         run_boostmonodepth(sample['ref_img_fi'], config['src_folder'], config['depth_folder'])
     elif config['require_midas'] is True:
