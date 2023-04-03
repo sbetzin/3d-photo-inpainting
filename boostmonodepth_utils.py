@@ -45,9 +45,8 @@ def run_boostmonodepth(img_names, src_folder, depth_folder, depthNet =2):
 
         depth_image = os.path.join(BOOST_BASE, BOOST_OUTPUTS, tgt_name)
         print(f'Inverting {depth_image}')
-        invert_grayscale_image(depth_image)
+        #invert_grayscale_image(depth_image)
         
-
         depth = imageio.imread(depth_image)
         print (f'depth shape={depth.shape}')
         depth = np.array(depth).astype(np.float32)
