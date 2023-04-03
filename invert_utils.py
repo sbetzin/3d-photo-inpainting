@@ -4,6 +4,7 @@ import os
 def invert_grayscale_image(image_path):
     # Bild laden
     img = cv2.imread(image_path)
+    print(f'shape={img.shape}')
 
     # Neuen Bildpfad erstellen
     dir_path, file_name = os.path.split(image_path)
