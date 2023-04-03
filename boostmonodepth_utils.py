@@ -45,11 +45,12 @@ def run_boostmonodepth(img_names, src_folder, depth_folder, depthNet = 2):
         depth_image = os.path.join(BOOST_BASE, BOOST_OUTPUTS, tgt_name)
         depth = imageio.imread(depth_image)
 
-        # Inverting the image if depthNet = 2.
+        # ------------------------------------------------------------------------------------------
+        # Inverting the image if depthNet = 2. The LeRes Depth estimation creates an inverted image
         if depthNet == 2:
             print(f'Inverting {depth_image}')
             depth = 255 - depth
-
+        
         print (f'depth shape={depth.shape}')
         depth = np.array(depth).astype(np.float32)
         depth = resize_depth(depth, target_width, target_height)
