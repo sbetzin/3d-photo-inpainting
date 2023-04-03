@@ -37,7 +37,7 @@ def run_boostmonodepth(img_names, src_folder, depth_folder):
 
     for i, (img_name, tgt_name) in enumerate(zip(img_names, tgt_names)):
         print("Inverting")
-        invert_grayscale_image(img_name)
+        invert_grayscale_image(tgt_name)
         
         img = imageio.imread(img_name)
         H, W = img.shape[:2]
