@@ -4,7 +4,6 @@ import glob
 import numpy as np
 import imageio
 from MiDaS.MiDaS_utils import write_depth
-from invert_utils import invert_grayscale_image
 
 BOOST_BASE = 'BoostingMonocularDepth'
 
