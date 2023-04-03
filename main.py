@@ -49,7 +49,7 @@ for idx in tqdm(range(len(sample_list))):
     mesh_fi = os.path.join(config['mesh_folder'], sample['src_pair_name'] +'.ply')
     image = imageio.imread(sample['ref_img_fi'])
 
-    print(f"Running depth extraction at {time.time()}")
+    print(f"Running depth extraction at {time.time()} wir use_boostmonodepth={config['use_boostmonodepth']}")
     if config['use_boostmonodepth'] is True:
         run_boostmonodepth(sample['ref_img_fi'], config['src_folder'], config['depth_folder'])
     elif config['require_midas'] is True:
