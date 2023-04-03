@@ -44,6 +44,8 @@ def run_boostmonodepth(img_names, src_folder, depth_folder, depthNet =2):
         target_height, target_width = int(round(H * scale)), int(round(W * scale))
 
         depth_image = os.path.join(BOOST_BASE, BOOST_OUTPUTS, tgt_name)
+        depth_image = 255 - depth_image
+        
         print(f'Inverting {depth_image}')
         #invert_grayscale_image(depth_image)
         
