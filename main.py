@@ -52,12 +52,11 @@ for idx in tqdm(range(len(sample_list))):
     mesh_fi = os.path.join(config['mesh_folder'], sample['src_pair_name'] +'.ply')
     image = imageio.imread(sample['ref_img_fi'])
 
-    print(f"Running depth extraction at {time.time()} with use_boostmonodepth={config['use_boostmonodepth']}")
+    print(f"Running depth extraction at {time.time()} with use_boostmonodepth={config['use_boostmonodepth']} and require_midas={config['require_midas']}")
     if config['use_boostmonodepth'] is True:
         run_boostmonodepth(sample['ref_img_fi'], config['src_folder'], config['depth_folder'])
     elif config['require_midas'] is True:
-        run_depth([sample['ref_img_fi']], config['src_folder'], config['depth_folder'],
-                  config['MiDaS_model_ckpt'], MonoDepthNet, MiDaS_utils, target_w=640)
+        run_depth([sample['ref_img_fi']], config['src_folder'], config['depth_folder'], config['MiDaS_model_ckpt'], MonoDepthNet, MiDaS_utils, target_w=640)
 
     if 'npy' in config['depth_format']:
         config['output_h'], config['output_w'] = np.load(sample['depth_fi']).shape[:2]
@@ -108,15 +107,7 @@ for idx in tqdm(range(len(sample_list))):
 
 
         print(f"Writing depth ply (and basically doing everything) at {time.time()}")
-        rt_info = write_ply(image,
-                              depth,
-                              sample['int_mtx'],
-                              mesh_fi,
-                              config,
-                              rgb_model,
-                              depth_edge_model,
-                              depth_edge_model,
-                              depth_feat_model)
+        rt_info = write_ply(image, depth, sample['int_mtx'], mesh_fi, config, rgb_model, depth_edge_model, depth_edge_model, depth_feat_model)
 
         if rt_info is False:
             continue
