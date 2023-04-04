@@ -44,7 +44,7 @@ if isinstance(config["gpu_ids"], int) and (config["gpu_ids"] >= 0):
 else:
     device = "cpu"
 
-print(f"running on device {device} with {range(len(sample_list))} files")
+print(f"running on device {device} with {len(sample_list)} files")
 
 for idx in tqdm(range(len(sample_list))):
     depth = None
