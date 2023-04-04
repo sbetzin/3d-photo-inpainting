@@ -28,7 +28,7 @@ parser.add_argument('--config', type=str, default='argument.yml',help='Configure
 args = parser.parse_args()
 config = yaml.load(open(args.config, 'r'), Loader=yaml.SafeLoader)
 
-print (config)
+print (f"Config:\n{config}")
 
 if config['offscreen_rendering'] is True:
     vispy.use(app='egl')
@@ -44,6 +44,7 @@ else:
     device = "cpu"
 
 print(f"running on device {device}")
+print(f"samples: \n{sample_list}")
 
 for idx in tqdm(range(len(sample_list))):
     depth = None
