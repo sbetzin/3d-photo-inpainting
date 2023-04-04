@@ -44,7 +44,6 @@ else:
     device = "cpu"
 
 print(f"running on device {device}")
-print(f"samples: \n{sample_list}")
 
 for idx in tqdm(range(len(sample_list))):
     depth = None
