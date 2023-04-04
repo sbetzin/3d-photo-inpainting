@@ -52,11 +52,12 @@ for idx in tqdm(range(len(sample_list))):
     print(f"Current Iamge={sample['src_pair_name']}")
     mesh_fi = os.path.join(config['mesh_folder'], sample['src_pair_name'] +'.ply')
     image = imageio.imread(sample['ref_img_fi'])
+    depth_file_exists = os.path.exists(sample['depth_fi'])
 
-    print(f"depth extraction with use_boostmonodepth={config['use_boostmonodepth']} and require_midas={config['require_midas']}")
+    print(f"depth extraction with depth_file_exists={depth_file_exists}, use_boostmonodepth={config['use_boostmonodepth']}, require_midas={config['require_midas']}")
 
     # Create the depth files only if they are not existing
-    if not os.path.exists(sample['depth_fi']):
+    if not depth_file_exists:
         if config['use_boostmonodepth'] is True:
             run_boostmonodepth(sample['ref_img_fi'], config['src_folder'], config['depth_folder'])
         elif config['require_midas'] is True:
