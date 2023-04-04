@@ -49,17 +49,18 @@ print(f"running on device {device} with {len(sample_list)} files")
 for idx in tqdm(range(len(sample_list))):
     depth = None
     sample = sample_list[idx]
-    print("Current Source ==> ", sample['src_pair_name'])
+    print(f"Current Iamge={sample['src_pair_name']}")
     mesh_fi = os.path.join(config['mesh_folder'], sample['src_pair_name'] +'.ply')
     image = imageio.imread(sample['ref_img_fi'])
 
     print(f"depth extraction with use_boostmonodepth={config['use_boostmonodepth']} and require_midas={config['require_midas']}")
-    print(f"depth_fi={sample['depth_fi']}")
 
-    if config['use_boostmonodepth'] is True:
-        run_boostmonodepth(sample['ref_img_fi'], config['src_folder'], config['depth_folder'])
-    elif config['require_midas'] is True:
-        run_depth([sample['ref_img_fi']], config['src_folder'], config['depth_folder'], config['MiDaS_model_ckpt'], MonoDepthNet, MiDaS_utils, target_w=640)
+    # Create the depth files only if they are not existing
+    if not os.path.exists(sample['depth_fi']):
+        if config['use_boostmonodepth'] is True:
+            run_boostmonodepth(sample['ref_img_fi'], config['src_folder'], config['depth_folder'])
+        elif config['require_midas'] is True:
+            run_depth([sample['ref_img_fi']], config['src_folder'], config['depth_folder'], config['MiDaS_model_ckpt'], MonoDepthNet, MiDaS_utils, target_w=640)
 
     if 'npy' in config['depth_format']:
         config['output_h'], config['output_w'] = np.load(sample['depth_fi']).shape[:2]
