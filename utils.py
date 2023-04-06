@@ -55,6 +55,16 @@ def path_planning(num_frames, x, y, z, path_type=''):
             ys += [np.sin(bs_shift_val * np.pi) * 1 * y]
             zs += [np.cos(bs_shift_val * np.pi/2.) * 1 * z]
         xs, ys, zs = np.array(xs), np.array(ys), np.array(zs)
+    elif path_type == 'spline':
+        # define the corner points of the spline trajectory
+        corner_points = np.array([[0, y, z], [x, 0, 0], [2 * x, y, z]])
+        corner_t = np.linspace(0, 1, len(corner_points))
+
+        # interpolate the corner points with a cubic spline
+        t = np.linspace(0, 1, num_frames)
+        cs = interp1d(corner_t, corner_points, axis=0, kind='cubic')
+        spline = cs(t)
+        xs, ys, zs = [xx.squeeze() for xx in np.split(spline, 3, 1)]
     return xs, ys, zs
 
 def open_small_mask(mask, context, open_iteration, kernel):
