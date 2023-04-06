@@ -59,7 +59,7 @@ for idx in tqdm(range(len(sample_list))):
     # Create the depth files only if they are not existing
     if not depth_file_exists:
         if config['use_boostmonodepth'] is True:
-            run_boostmonodepth(sample['ref_img_fi'], config['src_folder'], config['depth_folder'])
+            run_boostmonodepth(sample['ref_img_fi'], config['src_folder'], config['depth_folder'], config['depth_mode'])
         elif config['require_midas'] is True:
             run_depth([sample['ref_img_fi']], config['src_folder'], config['depth_folder'], config['MiDaS_model_ckpt'], MonoDepthNet, MiDaS_utils, target_w=640)
 

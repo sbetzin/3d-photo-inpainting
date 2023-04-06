@@ -4,6 +4,7 @@ rgb_feat_model_ckpt: checkpoints/color-model.pth
 MiDaS_model_ckpt: MiDaS/model.pt
 use_boostmonodepth: True
 require_midas: True
+depth_mode: 0
 fps: 30
 num_frames: 240
 x_shift_range: [0.00, 0.00, -0.015, -0.015]
