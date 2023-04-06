@@ -3,9 +3,6 @@ fb_status=$(wget --spider -S https://filebox.ece.vt.edu/ 2>&1 | grep  "HTTP/1.1 
 
 mkdir checkpoints
 
-echo "cloning from BoostingMonocularDepth ..."
-
-
 echo "downloading models ..."
 wget https://filebox.ece.vt.edu/~jbhuang/project/3DPhoto/model/color-model.pth --quiet
 wget https://filebox.ece.vt.edu/~jbhuang/project/3DPhoto/model/depth-model.pth --quiet
@@ -14,7 +11,6 @@ wget https://filebox.ece.vt.edu/~jbhuang/project/3DPhoto/model/edge-model.pth --
 mv color-model.pth /content/3d-photo-inpainting/checkpoints/.
 mv depth-model.pth /content/3d-photo-inpainting/checkpoints/.
 mv edge-model.pth /content/3d-photo-inpainting/checkpoints/.
-
 
 echo "downloading merge models weights ..."
 # Downloading merge model weights
