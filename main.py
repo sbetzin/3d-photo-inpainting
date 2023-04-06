@@ -54,7 +54,7 @@ for idx in tqdm(range(len(sample_list))):
     image = imageio.imread(sample['ref_img_fi'])
     depth_file_exists = os.path.exists(sample['depth_fi'])
 
-    print(f"depth extraction with depth_file_exists={depth_file_exists}, use_boostmonodepth={config['use_boostmonodepth']}, require_midas={config['require_midas']}, depth_mode={config['depth_mode'}")
+    print(f"depth extraction with depth_file_exists={depth_file_exists}, use_boostmonodepth={config['use_boostmonodepth']}, require_midas={config['require_midas']}, depth_mode={config['depth_mode']}")
 
     # Create the depth files only if they are not existing
     if not depth_file_exists:
