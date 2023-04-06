@@ -5,6 +5,7 @@
 !*.yml
 !*.txt
 !*.md
+!*.sh
 !*LICENSE
 !image/moon.jpg
 !depth/moon.npy
