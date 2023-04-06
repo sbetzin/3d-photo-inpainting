@@ -4,8 +4,7 @@ fb_status=$(wget --spider -S https://filebox.ece.vt.edu/ 2>&1 | grep  "HTTP/1.1 
 mkdir checkpoints
 
 echo "cloning from BoostingMonocularDepth ..."
-git clone https://github.com/compphoto/BoostingMonocularDepth.git
-mkdir -p /content/3d-photo-inpainting/BoostingMonocularDepth/pix2pix/checkpoints/mergemodel/
+
 
 echo "downloading models ..."
 wget https://filebox.ece.vt.edu/~jbhuang/project/3DPhoto/model/color-model.pth --quiet

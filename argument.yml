@@ -1,6 +1,6 @@
-depth_edge_model_ckpt: ../checkpoints/edge-model.pth
-depth_feat_model_ckpt: ../checkpoints/depth-model.pth
-rgb_feat_model_ckpt: ../checkpoints/color-model.pth
+depth_edge_model_ckpt: checkpoints/edge-model.pth
+depth_feat_model_ckpt: checkpoints/depth-model.pth
+rgb_feat_model_ckpt: checkpoints/color-model.pth
 MiDaS_model_ckpt: MiDaS/model.pt
 use_boostmonodepth: True
 require_midas: True
