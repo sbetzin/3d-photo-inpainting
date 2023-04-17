@@ -2235,10 +2235,11 @@ def output_3d_photo(verts, colors, faces, Height, Width, hFov, vFov, tgt_poses, 
     plane_width = np.tan(fov_in_rad/2.) * np.abs(mean_loc_depth)
 
     for video_pose, video_traj_type in zip(videos_poses, video_traj_types):
-        print(f"starting to generate {video_pose}")
+        print(f"starting to generate")
         stereos = []
         tops = []; buttoms = []; lefts = []; rights = []
         for tp_id, tp in enumerate(video_pose):
+            print(f'tp_id={tp_id}')
             rel_pose = np.linalg.inv(np.dot(tp, np.linalg.inv(ref_pose)))
             axis, angle = transforms3d.axangles.mat2axangle(rel_pose[0:3, 0:3])
             normal_canvas.rotate(axis=axis, angle=(angle*180)/np.pi)
