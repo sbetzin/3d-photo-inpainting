@@ -54,7 +54,7 @@ for idx in tqdm(range(len(sample_list))):
     image = imageio.imread(sample['ref_img_fi'])
     depth_file_exists = os.path.exists(sample['depth_fi'])
 
-    print(f"depth extraction with depth_file_exists={depth_file_exists}, use_boostmonodepth={config['use_boostmonodepth']}, require_midas={config['require_midas']}, depth_mode={config['depth_mode']}")
+    print(f"depth extraction settings: depth_file_exists={depth_file_exists}, use_boostmonodepth={config['use_boostmonodepth']}, require_midas={config['require_midas']}, depth_mode={config['depth_mode']}")
 
     # Create the depth files only if they are not existing
     if not depth_file_exists:
@@ -81,11 +81,12 @@ for idx in tqdm(range(len(sample_list))):
     depth = read_MiDaS_depth(sample['depth_fi'], 3.0, config['output_h'], config['output_w'])
     mean_loc_depth = depth[depth.shape[0]//2, depth.shape[1]//2]
     if not(config['load_ply'] is True and os.path.exists(mesh_fi)):
+        print(f"depth file not found.")
         vis_photos, vis_depths = sparse_bilateral_filtering(depth.copy(), image.copy(), config, num_iter=config['sparse_iter'], spdb=False)
         depth = vis_depths[-1]
         model = None
         torch.cuda.empty_cache()
-        print("Start Running 3D_Photo ...")
+        print("start Running 3D_Photo ...")
         print(f"Loading edge model at {time.time()}")
         depth_edge_model = Inpaint_Edge_Net(init_weights=True)
         depth_edge_weight = torch.load(config['depth_edge_model_ckpt'],
@@ -94,14 +95,14 @@ for idx in tqdm(range(len(sample_list))):
         depth_edge_model = depth_edge_model.to(device)
         depth_edge_model.eval()
 
-        print(f"Loading depth model at {time.time()}")
+        print(f"creating depth model at {time.time()}")
         depth_feat_model = Inpaint_Depth_Net()
         depth_feat_weight = torch.load(config['depth_feat_model_ckpt'], map_location=torch.device(device))
         depth_feat_model.load_state_dict(depth_feat_weight, strict=True)
         depth_feat_model = depth_feat_model.to(device)
         depth_feat_model.eval()
         depth_feat_model = depth_feat_model.to(device)
-        print(f"Loading rgb model at {time.time()}")
+        print(f"creating rgb model at {time.time()}")
         rgb_model = Inpaint_Color_Net()
         rgb_feat_weight = torch.load(config['rgb_feat_model_ckpt'], map_location=torch.device(device))
         rgb_model.load_state_dict(rgb_feat_weight)
@@ -110,7 +111,7 @@ for idx in tqdm(range(len(sample_list))):
         graph = None
 
 
-        print(f"Writing depth ply (and basically doing everything) at {time.time()}")
+        print(f"creating depth ply at {time.time()}")
         rt_info = write_ply(image, depth, sample['int_mtx'], mesh_fi, config, rgb_model, depth_edge_model, depth_edge_model, depth_feat_model)
 
         if rt_info is False:
@@ -121,6 +122,7 @@ for idx in tqdm(range(len(sample_list))):
         depth_feat_model = None
         torch.cuda.empty_cache()
     if config['save_ply'] is True or config['load_ply'] is True:
+        print(f"loading depth file: {mesh_fi}.")
         verts, colors, faces, Height, Width, hFov, vFov = read_ply(mesh_fi)
     else:
         verts, colors, faces, Height, Width, hFov, vFov = rt_info
