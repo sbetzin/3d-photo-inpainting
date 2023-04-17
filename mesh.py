@@ -2193,6 +2193,7 @@ def output_3d_photo(verts, colors, faces, Height, Width, hFov, vFov, tgt_poses, 
         canvas_h = cam_mesh.graph['H']
     canvas_size = max(canvas_h, canvas_w)
     if normal_canvas is None:
+        print("creating canvas")
         normal_canvas = Canvas_view(fov,
                                     verts,
                                     faces,
@@ -2204,6 +2205,8 @@ def output_3d_photo(verts, colors, faces, Height, Width, hFov, vFov, tgt_poses, 
     else:
         normal_canvas.reinit_mesh(verts, faces, colors)
         normal_canvas.reinit_camera(fov)
+
+    print("render 1st image")
     img = normal_canvas.render()
     backup_img, backup_all_img, all_img_wo_bound = img.copy(), img.copy() * 0, img.copy() * 0
     img = cv2.resize(img, (int(img.shape[1] / init_factor), int(img.shape[0] / init_factor)), interpolation=cv2.INTER_AREA)
@@ -2230,7 +2233,9 @@ def output_3d_photo(verts, colors, faces, Height, Width, hFov, vFov, tgt_poses, 
                   img.shape[1]]
     anchor = np.array(anchor)
     plane_width = np.tan(fov_in_rad/2.) * np.abs(mean_loc_depth)
+
     for video_pose, video_traj_type in zip(videos_poses, video_traj_types):
+        print(f"starting to generate {video_pose}")
         stereos = []
         tops = []; buttoms = []; lefts = []; rights = []
         for tp_id, tp in enumerate(video_pose):
