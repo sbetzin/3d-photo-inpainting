@@ -11,7 +11,7 @@ x_shift_range: [0.015]
 y_shift_range: [0]
 z_shift_range: [0]
 traj_types: ['double-straight-line']
-video_postfix: ['tlbr']
+video_postfix: ['rl']
 specific: ''
 longer_side_len: 1024
 src_folder: ../image
