@@ -31,7 +31,9 @@ config = yaml.load(open(args.config, 'r'), Loader=yaml.SafeLoader)
 print (f"Config:\n{config}")
 
 if config['offscreen_rendering'] is True:
+    print('using offscreen rendering')
     vispy.use(app='egl')
+    
 os.makedirs(config['mesh_folder'], exist_ok=True)
 os.makedirs(config['video_folder'], exist_ok=True)
 os.makedirs(config['depth_folder'], exist_ok=True)
