@@ -16,20 +16,23 @@ RUN apt-get install -y nano wget curl git sudo libglib2.0-0 libsm6 libxrender1 l
 RUN apt-get install python3.8 pip python3.8-venv -y && update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 # Install poetry
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN curl -sSL https://install.python-poetry.org | python3 - 
 ENV PATH="/root/.local/bin:${PATH}"
 
-# Copy sources
+#Install dependencies
+COPY ["/src/pyproject.toml", "/app/"]
 WORKDIR /app
-COPY ["/src/*.py" ,"/app"]
+RUN poetry install
+
+# Download models
+COPY ["/src/download_models.py", "/app/"]
+RUN python download_models.py /app/
+
+# Copy sources
+COPY ["/src/*.py" ,"/app/"]
+COPY ["/src/MiDaS/*.py" ,"/app/MiDaS/"]
 RUN mkdir checkpoints
 
 # Clone BoostingMonocularDepth Repo
 RUN git clone https://github.com/sbetzin/BoostingMonocularDepth.git
 RUN mkdir -p BoostingMonocularDepth/pix2pix/checkpoints/mergemodel/
-
-# Download models -> TODO: Replace with the download script
-RUN python download.py /app/
-
-#Install dependencies
-RUN poetry install
