@@ -19,6 +19,10 @@ RUN apt-get install python3.8 pip python3.8-venv -y && update-alternatives --ins
 RUN curl -sSL https://install.python-poetry.org | python3 - 
 ENV PATH="/root/.local/bin:${PATH}"
 
+# Turn off virtual env creation
+# https://github.com/orgs/python-poetry/discussions/1879
+RUN poetry config virtualenvs.create false
+
 #Install dependencies
 COPY ["/src/pyproject.toml", "/app/"]
 WORKDIR /app
@@ -34,4 +38,4 @@ RUN python download_models.py /app/
 # Copy sources
 COPY ["/src/*.py" ,"/app/"]
 COPY ["/src/MiDaS/*.py" ,"/app/MiDaS/"]
-
+COPY ["config/default.yml" ,"/app/"]
