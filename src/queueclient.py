@@ -59,18 +59,21 @@ def handle_message(blob_service_client, message):
         #telemetrie.track_event ("new image", job)
         
         content_name = job["content_name"]
+        recreate_depth_mesh = job["recreate_depth_mesh"]
 
         directory_content = "image"
         directory_result = "video"
+        directory_mesh = "/mesh"
+        directory_depth = "/depth"
         
         os.makedirs(directory_content, exist_ok=True)
         os.makedirs(directory_result, exist_ok=True)
         
-        # Delete all existing files. Otherwise the 3d-inpainting would iterate them all
-        clear_directory(directory_content)
-        
         content_file = os.path.join(directory_content, content_name)
-
+        
+        # Delete all existing images. Otherwise the 3d-inpainting would iterate them all
+        clear_directory(directory_content)
+        handle_mesh_deletion(directory_depth, directory_mesh, content_name, recreate_depth_mesh)
         update_yaml_file('default.yml', job)
         
         logger.info("downloading %s", content_file)
@@ -83,10 +86,40 @@ def handle_message(blob_service_client, message):
         logger.info("Setting exif data")
         #exifdump.write_exif(out_file_origcolor_0, config)
         
-        upload_videos(blob_service_client, directory_result)        
+        upload_videos(blob_service_client, directory_result)    
+        upload_depth(blob_service_client, directory_depth, replace_file_extension(content_name, '.png'))    
     except Exception as e:
         logger.exception(e)
 
+def handle_mesh_deletion(directory_depth, directory_mesh, content_name, recreate_depth_mesh):
+    if not recreate_depth_mesh:
+        return
+    
+    # Split the filename into name and extension
+    mesh_file_name = replace_file_extension(content_name, '.ply')
+    mesh_file = os.path.join(directory_mesh, mesh_file_name)
+    
+    if os.path.exists(mesh_file):
+        print(f"removing mesh file: {mesh_file_name}")
+        os.remove(mesh_file)
+        
+    depth_file_name = replace_file_extension(content_name, '.npy')
+    depth_file = os.path.join(directory_depth, depth_file_name)
+    
+    if os.path.exists(depth_file):
+        print(f"removing depth file: {mesh_file_name}")
+        os.remove(depth_file)
+        
+    
+def replace_file_extension(target_file, new_extension):
+    # Split the filename into name and extension
+    file_root, _ = os.path.splitext(target_file)
+
+    # Join the root with the new extension
+    new_filename = file_root + new_extension
+    
+    return new_filename
+ 
 def clear_directory(target_path):
     files = glob.glob(os.path.join(target_path, "*.jpg"))
 
@@ -99,9 +132,14 @@ def upload_videos(blob_service_client, directory_result):
     for file in files:
         target_name = os.path.basename(file)
         print(f"Uploading {file}")
-        upload_file(blob_service_client, target_name, file)
+        upload_file(blob_service_client,"results", target_name, file)
         os.remove(file)
+
+def upload_depth(blob_service_client, directory_depth, depth_file_name):
+    print(f"Uploading {depth_file_name}")
+    depth_file = os.join(directory_depth, depth_file_name)
     
+    upload_file(blob_service_client, "depth", depth_file_name, depth_file)
      
 def download_file(blob_service_client, source_name, source_file):
     blob_client = blob_service_client.get_blob_client(container="images", blob=source_name)
@@ -109,12 +147,12 @@ def download_file(blob_service_client, source_name, source_file):
     with open(source_file, "wb") as download_file:
         download_file.write(blob_client.download_blob().readall())
 
-def upload_file(blob_service_client, target_name, file_name):
+def upload_file(blob_service_client, container, target_name, file_name):
     try:
         if os.path.exists(file_name):
             logger.info ("uploading file %s", file_name)
             
-            blob_client = blob_service_client.get_blob_client(container="results", blob=target_name)
+            blob_client = blob_service_client.get_blob_client(container=container, blob=target_name)
             with open(file_name, "rb") as data:
                 blob_client.upload_blob(data, overwrite=True)
 
